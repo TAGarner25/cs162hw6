@@ -1,6 +1,6 @@
 // Trevor Garner
-// CS 162 HW5
-// Class header: SongList
+// CS 162 HW6
+// Header file: SongList class
 
 #ifndef SONGLIST_H
 #define SONGLIST_H
@@ -9,6 +9,7 @@
 
 /*
      TODO: update for dynamic memory
+     TODO: default constructor initialized memory for Song* list
 */
 class SongList
 {
@@ -17,12 +18,12 @@ private:
      const static int CAP = 100;    // max capacity for list
 	 int SIZE = -1;
      //Song list[CAP];		    // original arr
-     Song* list = new Song[SIZE];	    // ptr to song obj
+     Song* list;	    // ptr to song obj
 
 public:
 
      // constructor & deconstructor
-     SongList();		    // default
+     SongList() {list = new Song[SIZE]};		    // default constructor
      //SongList();           // copy
      ~SongList();		    // destructor
 
