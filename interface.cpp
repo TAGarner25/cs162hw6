@@ -6,7 +6,7 @@
 //			-> ~lliang/cs162/lectures/module5
 
 #include "interface.h"
-#include "funcs.h"
+#include "utils.h"
 
 /*
 	function to start the program
@@ -14,7 +14,7 @@
 void start()  // start prog
 {
      char fileName[] = "songs.txt";
-     SongList* library = new SongList;
+     SongList library;
      int action;     
 
      // step 1: load songs
@@ -196,7 +196,4 @@ void searchList(SongList& library)
      // search list by name and type of search
      library.searchSongs(name, searchBy);
 }
-
-
-
 

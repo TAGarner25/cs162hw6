@@ -1,5 +1,5 @@
 // Trevor Garner
-// hw5 Song.cpp src
+// hw6 Song.cpp src
 // contains definitions for Song class members
 
 #include "song.h"
@@ -7,28 +7,44 @@
 // default constructor
 Song::Song()
 {
+	int size = 1;
      // initialize default data members
-     title = nullptr;
-     artist = nullptr;
-     duration = nullptr;
-     album = nullptr;
+     title = new char[size];
+     artist = new char[size];
+     duration = new float;
+     album = new char[size];
 }
 
 /*
      constuctor with parameters
      TODO: why would i use this?...
 */
-Song::Song(const char *  title, const char * artist, float * duration, const char * album)
+Song::Song(Song& aSong, int lenTitle, int lenArtist, int LenAlbum)
 {
+	title = new char[lenTitle];
+	artist = new char[lenArtist];
+	duration = new float;
+	album = new char[lenAlbum];
+
+	strncpy(this->title, aSong->title, lenTitle);
+	this->*duration = aSong->duration;
+	strncpy(this->artist, aSong->artist, lenArtist);
+	strncpy(this->album, aSong->album, lenAlbum);
      // call init function
-     initSong(title, artist, duration, album);
+     initSong(&title, &artist, &duration, &album);
 
 }
 
 /*
      deconstructor
 */
-Song::~Song() {}
+Song::~Song()
+{
+	delete title[];
+	delete artist[];
+	delete duration;
+	delete album[];
+}
 
 /*
   init object song
@@ -59,43 +75,41 @@ void Song::initSong(const char * ttl, const char * art, float * dur, const char 
 
                     /*   SET VARIABLES  */
 // title
-void Song::setTitle(const char * ttl)
+void Song::setTitle(const char title[])
 {
-    size_t len = strlen(ttl) + 1;
-    title = new char[len];
-    strcpy(this->title, ttl);
+    size_t len = strlen(title) + 1;
+    this->title = new char[len];
+    strcpy(this->title, title);
 }
 
 // artist
-void Song::setArtist(const char * art)
+void Song::setArtist(const char artist[])
 {
-    size_t len = strlen(art) + 1;
-    artist = new char[len];
-    strcpy(this->artist, art);
+    size_t len = strlen(artist) + 1;
+    this->artist = new char[len];
+    strcpy(this->artist, artist);
 }
 
 // duration
-void Song::setDuration(float * dur)
+void Song::setDuration(float duration)
 {
-     duration = new float;
-     duration = dur;
+     this->duration = new float;
+     duration = duration;
 }
 
 // album
-void Song::setAlbum(const char * alb)
+void Song::setAlbum(const char album[])
 {
-    size_t len = strlen(alb) + 1;
-    album = new char[len];
-    strcpy(this->album, alb);
+    size_t len = strlen(album) + 1;
+    this->album = new char[len];
+    strcpy(this->album, album);
 }
                     /*   GET VARIABLES  */
 
 // title
 void Song::getTitle(char * title) const
 {
-     temp = new title;
-     temp = &title;
-     strcpy( this->title);
+     strcpy(title, this->title);
 }
 
 // artist
@@ -154,5 +168,3 @@ void Song::print(int index) const
           << endl;
 	cout << endl;
 }
-
-

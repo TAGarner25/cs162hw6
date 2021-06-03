@@ -15,9 +15,9 @@ class SongList
 private:
 
      const static int CAP = 100;    // max capacity for list
-     Song list[CAP];		    // original arr
-     Song* List[CAP];	    // ptr to song obj
-     int size;
+	 int SIZE = -1;
+     //Song list[CAP];		    // original arr
+     Song* list = new Song[SIZE];	    // ptr to song obj
 
 public:
 
