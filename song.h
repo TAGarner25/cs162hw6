@@ -17,31 +17,32 @@ public:
     Song();   // constructor
     ~Song();  // destructor
     Song(const Song& aSong); // copy constructor
-	
+	// constructor with parameters 
+	Song(const char *title, const char *artist, float *duration, const char *album);	
 	// functions
-	void print() const; // print song
+	void print(int index) const; // print song
 	void getSong();
 	 
 	// setters
-	void setTitle(const char * ttl);
-	void setArtist(const char * art);
-	void setDuration(float * dur);
-	void setAlbum(const char * alb);
+	void setTitle(const char * title);
+	void setArtist(const char * artist);
+	void setDuration(float * duration);
+	void setAlbum(const char * album);
 
 	// getters
-	void getTitle(char * ttl) const;
-	void getArtist(char * art) const;
+	void getTitle(char * title) const;
+	void getArtist(char * artist) const;
 	float getDuration() const;
-	void getAlbum(char * alb) const;
+	void getAlbum(char * album) const;
 
 private:
 	// declare pointers to be initialized upon creation
-	char* title;
-	char* artist;
-	float* duration;
-	char* album;
+	char	* title;
+	char	* artist;
+	float	* duration;
+	char	* album;
 
-	void initSong(const char * ttl, const char * art, float * dur, const char * alb);
+	void initSong(const char * title, const char * artist, float * duration, const char * album);
 };
 
 #endif
