@@ -46,9 +46,9 @@ Song::Song(const Song& aSong)
 /*
      * OKAY *
 */
-Song::Song(const char title[], const char artist[], float duration, const char album[])
+Song::Song(const char title[], const char artist[], float &duration, const char album[])
 {
-     initSong(title, artist, duration, album);
+     initSong(title, artist, &duration, album);
 }
 /*
      deconstructor
@@ -71,10 +71,10 @@ void Song::initSong(const char * title, const char * artist, float * duration, c
      size_t lenArt = strlen(artist) + 1;
      size_t lenAlb = strlen(album) + 1;
      
-     title = new char[lenTtl];
-     artist = new char[lenArt];
-     duration = new float;
-     album = new char[lenAlb];
+     this->title = new char[lenTtl];
+     this->artist = new char[lenArt];
+     this->duration = new float;
+     this->album = new char[lenAlb];
 
      // * OKAY * this is a deep copy.
      strcpy(this->title, title);        // title
@@ -92,7 +92,7 @@ void Song::setTitle(const char title[])
 {
     size_t len = strlen(title) + 1;
     this->title = new char[len];
-    strncpy(this->title, title);
+    strcpy(this->title, title);
 }
 
 // artist
@@ -101,7 +101,7 @@ void Song::setArtist(const char artist[])
 {
     size_t len = strlen(artist) + 1;
     this->artist = new char[len];
-    strncpy(this->artist, artist);
+    strcpy(this->artist, artist);
 }
 
 // duration
@@ -109,7 +109,10 @@ void Song::setArtist(const char artist[])
 void Song::setDuration(float duration)
 {
      // deep copy parameter to this->instance of duration
-     this->duration = new float(*(duration));
+     float temp;
+     temp = duration;
+     this->duration = new float;
+     this->duration = &temp;     
 }
 
 // album
@@ -118,7 +121,7 @@ void Song::setAlbum(const char album[])
 {
     size_t len = strlen(album) + 1;
     this->album = new char[len];
-    strncpy(this->album, album);
+    strcpy(this->album, album);
 }
                     /*   GET VARIABLES  */
 
@@ -144,9 +147,9 @@ void Song::getArtist(char artist[]) const
 // * OKAY *
 float Song::getDuration() const
 {
-     float ** temp;
+     float * temp;
      temp = this->duration;
-     return temp;
+     return *temp;
 }
 
 // album
@@ -173,17 +176,19 @@ void Song::getSong()
      int len = strlen(tempStr) + 1; // get str len
      title = new char[len];  // declare pointer to title
      strcpy(this->title, tempStr);  // copy value to ptr
-     for (auto c : tempStr)
+     len = 0;
+     for (int c : tempStr)
      {
           tempStr[c] = 0;
      } 
 
      cout << "Please enter song artist: ";
      getString(tempStr, MAX_CHAR);
-     int len = strlen(tempStr) + 1; // get str len
+     len = strlen(tempStr) + 1; // get str len
      artist = new char[len];  // declare pointer to title
      strcpy(this->artist, tempStr);  // copy value to ptr
-     for (auto c : tempStr)
+     len = 0;
+     for (int c : tempStr)
      {
           tempStr[c] = 0;
      }
@@ -195,10 +200,11 @@ void Song::getSong()
      
      cout << "Please enter song album: ";
      getString(tempStr, MAX_CHAR);
-     int len = strlen(tempStr) + 1; // get str len
+     len = strlen(tempStr) + 1; // get str len
      album = new char[len];  // declare pointer to title
      strcpy(this->album, tempStr);  // copy value to ptr
-     for (auto c : tempStr)
+     len = 0;
+     for (int c : tempStr)
      {
           tempStr[c] = 0;
      }

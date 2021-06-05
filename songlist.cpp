@@ -16,17 +16,18 @@
 // default constructor
 SongList::SongList()
 {
-     size++;
-     list = new Song[size]
+     SIZE++;
+     list = new Song[SIZE];	// declare pointer array to list
      // declare number of songs
      // default is 0 if no songs in list
      list = nullptr;
 }
 
 // TODO: needs to perform a *deep* copy of 'aSong' data to new Song object in list
-SongList::SongList(const Song &aSong)
+SongList::SongList(const Song& aSong)
 {
     // TODO: definition goes here
+
 }
 // destructor
 SongList::~SongList() 
@@ -47,7 +48,6 @@ SongList::~SongList()
 void SongList::loadSongs(const char fileName[])
 {
      ifstream inFile;         // ifstream operator
-     Song* aSong;              // ptr to aSong
 
 	// temp values to read into pointers
     char title[MAX_CHAR];
@@ -71,6 +71,9 @@ void SongList::loadSongs(const char fileName[])
     // read info until end of file
     while (!inFile.eof())
     {
+		Song* aSong;
+	 	aSong = new Song;        // ptr to aSong
+
         inFile.get();  // discard ';'
         inFile.get(artist, MAX_CHAR, ';');
         inFile.get();  // discard ';'
@@ -83,10 +86,12 @@ void SongList::loadSongs(const char fileName[])
         aSong->setArtist(artist);
         aSong->setDuration(duration);
         aSong->setAlbum(album);
-       
-        // add thisSong to list
-        addSongs(aSong);
 
+        // add newSong to songlist list
+		// TODO: fix this...
+			// ? do i really need two different pointers to accomplish?
+        addSongs(*aSong);
+		delete aSong; // ! do I need to delete this???
         // repeat
         inFile.get(title, MAX_CHAR, ';');
     }
@@ -117,7 +122,7 @@ void SongList::saveSongs(const char fileName[]) const
     }
 
     // loop through Song list and get info, then print to file
-    for (auto idx = 0; idx < size; idx++)
+    for (auto idx = 0; idx < SIZE; idx++)
     {
         // get info for Song obj
 		list[idx].getTitle(title);
@@ -156,7 +161,7 @@ bool SongList::addSongs(const Song& newSong)
     newSong.getArtist(newArtist);
     
 
-    for (int idx = 0; idx < size; idx++)
+    for (int idx = 0; idx < SIZE; idx++)
     {    
 		title = false;		// start @ false for each loop
 		artist = false;
@@ -186,8 +191,8 @@ bool SongList::addSongs(const Song& newSong)
      
     if (found == false) // if not already in list
     {
-    	list[size] = newSong;    // add newSong to list
-        size++;
+    	list[SIZE] = newSong;    // add newSong to list
+        SIZE++;
         return true;
     }
     else
@@ -205,12 +210,12 @@ void SongList::removeSongs(int removeIdx)
 {
     // old code
     // loop through list and remove desired song
-    for (int idx = removeIdx; idx < size; idx++)
+    for (int idx = removeIdx; idx < SIZE; idx++)
     {
          list[idx] = list[idx + 1];     // delete song
     }
     
-    size--;   // decrease size by 1
+    SIZE--;   // decrease size by 1
 
     // new code
     // delete pointer to specific item
@@ -227,7 +232,7 @@ void SongList::removeSongs(int removeIdx)
 void SongList::printSongs() const
 {
      // loop through list and have obj print contents
-     for (auto idx = 0; idx < size; idx++)
+     for (auto idx = 0; idx < SIZE; idx++)
      {
           int pos = idx;			// song index
           list[idx].print(pos);	// print song
@@ -254,9 +259,9 @@ void SongList::searchSongs(const char * name, int searchBy) const
      {
           case 1:   // artist
 			// loop through list and compare name to artist
-               for (int idx = 0; idx < size; idx++)
+               for (int idx = 0; idx < SIZE; idx++)
                {
-                    List[idx].getArtist(listArtist);
+                    list[idx].getArtist(listArtist);
                     index = idx;
 
                     if (strcmp(listArtist, name) == 0)     // compare list artist to search name
@@ -273,7 +278,7 @@ void SongList::searchSongs(const char * name, int searchBy) const
                }
           case 2:   // album
 			// loop through list and compare name to album
-               for (int idx = 0; idx < size; idx++)
+               for (int idx = 0; idx < SIZE; idx++)
                {
                     list[idx].getAlbum(listAlbum);
                     index = idx;

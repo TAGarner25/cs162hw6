@@ -144,13 +144,14 @@ char repeatAction()
 	function to add a new song the song list (from user input)
 	parameters: SongList object ('library')
 */
-void addToList(SongList& library)		// get a new song from user and add to song list
+void addToList(SongList* library)		// get a new song from user and add to song list
 {
      Song * newSong;
+     newSong = new Song;
 
      newSong->getSong(); // read new song from user
 
-     if (library.addSongs(newSong) == true)  // compare new song to existing songs
+     if (library->addSongs(*newSong) == true)  // compare new song to existing songs
      {    // if true then song added successfully
           cout << "Song added successfully." << endl;
      }
