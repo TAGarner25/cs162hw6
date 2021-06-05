@@ -13,8 +13,9 @@
 */
 class Song
 {
+
 public:
-    Song();   // constructor
+    Song();   // default constructor
     ~Song();  // destructor
     Song(const Song& aSong); // ! deep copy constructor
 	// constructor with parameters 
@@ -42,12 +43,14 @@ private:
 	float * duration;
 	char * album;
 
+	// ? is this correct ?
+	void initSong(const char * title, const char * artist, float * duration, const char * album);
+
 // ! add operator declarations (operator overload)
 //	used to help 'streamline' the coding process. 
 friend:
 
-	// ? is this correct ?
-	void initSong(const char * title, const char * artist, float * duration, const char * album);
+
 };
 
 #endif

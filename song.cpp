@@ -39,14 +39,20 @@ Song::Song(const Song& aSong)
      *newSong = aSong;
 }
 
-// default constructor
-// deep copy by using 'init' function
+/*
+     default constructor
+     deep copy by using 'init' function
+*/
+/*
+     * OKAY *
+*/
 Song::Song(const char title[], const char artist[], float duration, const char album[])
 {
      initSong(title, artist, duration, album);
 }
 /*
      deconstructor
+     * OKAY *
 */
 Song::~Song()
 {
@@ -57,12 +63,7 @@ Song::~Song()
 }
 
 /*
-  init object song
-  params
-     char title
-     char artist
-     float duration
-     char album
+  * OKAY *
 */
 void Song::initSong(const char * title, const char * artist, float * duration, const char * album) 
 {
@@ -75,6 +76,7 @@ void Song::initSong(const char * title, const char * artist, float * duration, c
      duration = new float;
      album = new char[lenAlb];
 
+     // * OKAY * this is a deep copy.
      strcpy(this->title, title);        // title
      strcpy(this->artist, artist);      // artist
      this->duration = duration;         // duration
@@ -85,60 +87,74 @@ void Song::initSong(const char * title, const char * artist, float * duration, c
 
                     /*   SET VARIABLES  */
 // title
+// * OKAY *
 void Song::setTitle(const char title[])
 {
     size_t len = strlen(title) + 1;
-    //this->title;
-    strncpy(this->title, title, len);
+    this->title = new char[len];
+    strncpy(this->title, title);
 }
 
 // artist
-void Song::setArtist(const char * artist)
+// * OKAY *
+void Song::setArtist(const char artist[])
 {
     size_t len = strlen(artist) + 1;
-    strncpy(this->artist, artist, len);
+    this->artist = new char[len];
+    strncpy(this->artist, artist);
 }
 
 // duration
-void Song::setDuration(float * duration)
+// * OKAY *
+void Song::setDuration(float duration)
 {
      // deep copy parameter to this->instance of duration
      this->duration = new float(*(duration));
 }
 
 // album
+// * OKAY *
 void Song::setAlbum(const char album[])
 {
     size_t len = strlen(album) + 1;
-    strncpy(this->album, album, len);
+    this->album = new char[len];
+    strncpy(this->album, album);
 }
                     /*   GET VARIABLES  */
 
 // title
+// * OKAY *
 void Song::getTitle(char * title) const
 {
+     size_t len = strlen(this->title) + 1;
+     title = new char[len];
      strcpy(title, this->title);
 }
 
 // artist
+// * OKAY *
 void Song::getArtist(char artist[]) const
 {
      size_t len = strlen(this->artist) + 1;
+     artist = new char[len];
      strcpy(artist, this->artist);
 }
 
 // duration
+// * OKAY *
 float Song::getDuration() const
 {
-     float * temp;
+     float ** temp;
      temp = this->duration;
-     return *temp;
+     return temp;
 }
 
 // album
+// * OKAY *
 void Song::getAlbum(char album[]) const
 {
      size_t len = strlen(this->album) + 1;
+     album = new char[len];
      strcpy(album, this->album);
 }
 
@@ -155,7 +171,7 @@ void Song::getSong()
      cout << "Please enter song title: ";
      getString(tempStr, MAX_CHAR);  // read to temp str
      int len = strlen(tempStr) + 1; // get str len
-     char * title = new char[len];  // declare pointer to title
+     title = new char[len];  // declare pointer to title
      strcpy(this->title, tempStr);  // copy value to ptr
      for (auto c : tempStr)
      {
@@ -165,7 +181,7 @@ void Song::getSong()
      cout << "Please enter song artist: ";
      getString(tempStr, MAX_CHAR);
      int len = strlen(tempStr) + 1; // get str len
-     char * artist = new char[len];  // declare pointer to title
+     artist = new char[len];  // declare pointer to title
      strcpy(this->artist, tempStr);  // copy value to ptr
      for (auto c : tempStr)
      {
@@ -173,13 +189,14 @@ void Song::getSong()
      }
 
      cout << "Please enter song duration: ";
-     float * duration = new float;
-     cin >> *duration;
+     duration = new float;
+     cin >> tempFlt;
+     *duration = tempFlt;
      
      cout << "Please enter song album: ";
-     getString(album, MAX_CHAR);
+     getString(tempStr, MAX_CHAR);
      int len = strlen(tempStr) + 1; // get str len
-     char * talbum = new char[len];  // declare pointer to title
+     album = new char[len];  // declare pointer to title
      strcpy(this->album, tempStr);  // copy value to ptr
      for (auto c : tempStr)
      {

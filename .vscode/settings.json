@@ -2,5 +2,61 @@
     "cSpell.words": [
         "obj's"
     ],
-    "python.pythonPath": "C:\\Users\\Trevor Garner\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+    "python.pythonPath": "C:\\Users\\Trevor Garner\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "diffEditor.codeLens": true,
+    "editor.minimap.enabled": false,
+    "workbench.colorTheme": "Dank Neon",
+    "workbench.preferredDarkColorTheme": "Dank Neon",
+    "telemetry.enableCrashReporter": false,
+    "better-comments.tags": [
+
+        {
+            "tag": "!",
+            "color": "#FF2D00",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": true,
+            "italic": true
+        },
+        {
+            "tag": "?",
+            "color": "#3498DB",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": true
+        },
+        {
+            "tag": "//",
+            "color": "#474747",
+            "strikethrough": true,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": true
+        },
+        {
+            "tag": "todo",
+            "color": "#FF8C00",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": true,
+            "italic": true
+        },
+        {
+            "tag": "*",
+            "color": "#03FCE3",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": true
+        }
+    ],
+    "C_Cpp.experimentalFeatures": "Enabled",
+    "bracketPairColorizer.highlightActiveScope": true
 }
