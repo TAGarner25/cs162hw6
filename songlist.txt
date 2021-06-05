@@ -1,46 +1,12 @@
-// Trevor Garner
-// CS 162 HW5
-// Function definitions for SongList class
-
-#include "songlist.h"
-#include <fstream>
-
-/*
-     TODO: None
-*/
-
-               /*   CONSTRUCTORS & DECONSTRUCTOR  */
-
-// default constructor
-SongList::SongList()
-{
-     // declare number of songs
-     // default is 0 if no songs in list
-     size = 0;
-}
-
-// destructor
-SongList::~SongList() {}
-
-/******************          FUNCTIONS          ******************************/
-
-                    /*   PROGRAM FUNCTIONS   */
-
-/*
-     function to load song collection from file
-     recieves fileName on call
-     creates Song obj called 'thisSong' and adds to Song list
-*/
 void SongList::loadSongs(const char fileName[])
 {
-     ifstream inFile;         // ifstream operator
-     Song *aSong;              // Song object
-     char temp[MAX_CHAR];	// used to get len of str   
-	 char *title = nullptr;// read in title
-     char *artist = nullptr;   // read in artist
-     float *duration = nullptr;          // read in duration
-     char *album = nullptr;    // read in album
-    
+     ifstream inFile;
+     Song *aSong;             
+     char temp[MAX_CHAR];	 
+     char *title = nullptr;
+     char *artist = nullptr;  
+     float *duration = nullptr;
+     char *album = nullptr;    
      // open file
      inFile.open(fileName);
      
@@ -75,14 +41,15 @@ void SongList::loadSongs(const char fileName[])
 		cerr << "Error, title = nullptr...";
 		exit(1);
 		}
-		inFile.get();  // discard ';'
+		inFile.get();
+	  duration = new duration;  
         inFile >> duration;
         if (duration == nullptr)
 		{
 			cerr << "Error, duration = nullptr...";
 			exit(1);
 		}
-        inFile.get();  // discard ';'
+        inFile.get();  
 		temp = "";
 		inFile.get(temp, MAX_CHAR, ';');
 		int lenAlbum = strlen(temp) + 1;
@@ -93,8 +60,7 @@ void SongList::loadSongs(const char fileName[])
 			cerr << "Error, album = nullptr...";
 			exit(1);
 		}
-		inFile.ignore(MAX_CHAR, '\n');     // discard new line
-
+		inFile.ignore(MAX_CHAR, '\n');    
         // set info to thisSong obj
 		// delete unused memory
 		// set ptr to nullptr to reuse
@@ -110,10 +76,8 @@ void SongList::loadSongs(const char fileName[])
         aSong->setAlbum(album);
 		delete album[];
 		album = nullptr;
-         
         // add thisSong to list
         addSongs(aSong);
-
 		// repeat
 		temp = "";
 		infile.get(temp, MAX_CHAR, ';');
@@ -121,7 +85,6 @@ void SongList::loadSongs(const char fileName[])
 		title = new char[lenTitle];
         inFile.get(title, MAX_CHAR, ';');
     }
-
     // close inFile
     inFile.close();
 }
@@ -168,149 +131,4 @@ void SongList::saveSongs(const char fileName[]) const
      outFile.close();
 }
 
-                    /*   USER INTERFACE FUNCTIONS */
 
-/*
-     function to add song to song list
-     parameters
-          Song newSong -> the newSong object the user has provided
-*/
-bool SongList::addSongs(const Song& newSong)
-{     
-     bool found, title, artist;
-     char newTitle[MAX_CHAR];
-     char newArtist[MAX_CHAR];
-     char existingTitle[MAX_CHAR];
-     char existingArtist[MAX_CHAR];
-      
-     // get newSong's information
-     newSong.getTitle(newTitle);
-     newSong.getArtist(newArtist);
-     
-
-     for (int idx = 0; idx < size; idx++)
-     {    
-		title = false;		// start @ false for each loop
-		artist = false;
-		// get existing information
-          list[idx].getTitle(existingTitle);
-          list[idx].getArtist(existingArtist);
-          // compare list title to newTitle
-          if (strcmp(existingTitle, newTitle) == 0)
-          {
-               title = true;
-          }
-          // compare this obj's artist to newArtist
-          if (strcmp(existingArtist, newArtist) == 0)
-          {
-               artist = true;
-          }
-          // if both true, then song already exists in list
-          if ((title == true) && (artist == true))
-          {
-               found = true;
-          }
-          else
-          {
-               found = false;
-          }
-     }
-     
-     if (found == false) // if not already in list
-     {
-          list[size] = newSong;    // add newSong to list
-          size++;
-          return true;
-     }
-     else
-     {
-          return false;	// item already exists, do not add to list
-     }
-}         
-
-/*
-     function to remove song
-     parameter
-          index position of song to remove (provided by user)
-*/
-void SongList::removeSongs(int removeIdx)
-{
-     // loop through list and remove desired song
-     for (int idx = removeIdx; idx < size; idx++)
-     {
-          list[idx] = list[idx + 1];     // delete song
-     }
-     
-     size--;   // decrease size by 1
-}
-
-/*
-     function to print all songs in list
-*/
-void SongList::printSongs() const
-{
-     // loop through list and have obj print contents
-     for (auto idx = 0; idx < size; idx++)
-     {
-          int pos = idx;			// song index
-          list[idx].print(pos);	// print song
-     }
-}
-
-/*
-     function to search list of songs
-     parameters
-          const char name[] -> the search string provided by user
-		int searchby -> the type of search user wants (1 = artist, 2 = album)
-*/
-void SongList::searchSongs(const char name[], int searchBy) const
-{
-     bool found = false;						// flag to determine if item was found
-     
-     char listArtist[MAX_CHAR];                  	// search item from list
-     char listAlbum[MAX_CHAR];                   	// search item from list 
-
-     int index;							// used to print index position of song in list
-     
-
-     switch (searchBy)
-     {
-          case 1:   // artist
-			// loop through list and compare name to artist
-               for (int idx = 0; idx < size; idx++)
-               {
-                    list[idx].getArtist(listArtist);
-                    index = idx;
-
-                    if (strcmp(listArtist, name) == 0)     // compare list artist to search name
-                    {	// if are same print results
-                         found = true;
-                         list[idx].print(index);
-                    }
-			}
-               if (found == false) // if not found, display err msg
-               {
-                    cout << "Sorry, can't find what you're looking for..." << endl;
-                    cout << "Maybe try another search." << endl;
-				break;
-               }
-          case 2:   // album
-			// loop through list and compare name to album
-               for (int idx = 0; idx < size; idx++)
-               {
-                    list[idx].getAlbum(listAlbum);
-                    index = idx;
-                    if (strcmp(listAlbum, name) == 0)      // compare list album to search name
-                    {	// if are the same, print results
-                         found = true;
-                         list[idx].print(index);
-                    }
-			}
-               if (found == false) // if not found, display err msg
-               {
-                    cout << "Sorry, can't find what you're looking for..." << endl;
-                    cout << "Maybe try another search." << endl;
-				break;
-               }
-     }//end switch
-}

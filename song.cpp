@@ -4,15 +4,23 @@
 
 #include "song.h"
 
+// ! IMPORTANT:
+// * HIGHLIGHT:
+// ? QUESTION:
+// TODO:
+// normal
+
 // default constructor
 Song::Song()
 {
-	int size = 1;
      // initialize default data members
-     title = new char[size];
-     artist = new char[size];
-     duration = new float;
-     album = new char[size];
+     // TODO: dont need to declare new & set = to nullptr...
+          //! can do either or, but since not using variable immediately, best to just set = to nullptr
+     // int size = 1;
+     // title = new char[size];
+     // artist = new char[size];
+     // duration = new float;
+     // album = new char[size];
 
      title = nullptr;
      artist = nullptr;
@@ -20,9 +28,10 @@ Song::Song()
      album = nullptr;
 }
 
-/*
-     constuctor with parameters
-     TODO: why would i use this?...
+/*   
+     ! DEEP COPY !
+     deep copy with Song object as parameter
+     constuctor with parameter
 */
 Song::Song(const Song& aSong)
 {
@@ -30,6 +39,12 @@ Song::Song(const Song& aSong)
      *newSong = aSong;
 }
 
+// default constructor
+// deep copy by using 'init' function
+Song::Song(const char title[], const char artist[], float duration, const char album[])
+{
+     initSong(title, artist, duration, album);
+}
 /*
      deconstructor
 */

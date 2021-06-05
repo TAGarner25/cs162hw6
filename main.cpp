@@ -6,7 +6,9 @@
 #include "interface.h"
 
 /*
-     TODO: None
+     TODO: memory check
+     ! Code:
+     !     valgrind --tool=memcheck --leak-check=fullexecutable-file
 */
 
 int main()

@@ -16,18 +16,24 @@
 // default constructor
 SongList::SongList()
 {
+     size++;
+     list = new Song[size]
      // declare number of songs
      // default is 0 if no songs in list
      list = nullptr;
 }
 
-// TODO: new constructor for copying a song obj
+// TODO: needs to perform a *deep* copy of 'aSong' data to new Song object in list
 SongList::SongList(const Song &aSong)
 {
-    // definition goes here
+    // TODO: definition goes here
 }
 // destructor
-SongList::~SongList() {}
+SongList::~SongList() 
+{
+     delete [] list;
+     list = nullptr;
+}
 
 /******************          FUNCTIONS          ******************************/
 
@@ -35,7 +41,7 @@ SongList::~SongList() {}
 
 /*
      function to load song collection from file
-     recieves fileName on call
+     receives fileName on call
      creates Song obj called 'thisSong' and adds to Song list
 */
 void SongList::loadSongs(const char fileName[])
@@ -44,23 +50,10 @@ void SongList::loadSongs(const char fileName[])
      Song* aSong;              // ptr to aSong
 
 	// temp values to read into pointers
-    char *title;
-    char *artist;
-    float *duration;
-    char *album;
-
-	// pointers (dont think i need here since reading these to pointers in song obj
-    title = new char[MAX_CHAR];    // read in title
-    artist = new char[MAX_CHAR];   // read in artist
-    duration = new float;          // read in duration
-    album = new char[MAX_CHAR];    // read in album
-    
-    // track len of strings
-    int size = 0;
-    int *lenTitle;
-    int *lenArtist;
-    int *lenAlbum;
-    lenTitle = new int[MAX_SIZE];
+    char title[MAX_CHAR];
+    char artist[MAX_CHAR];
+    float duration;
+    char album[MAX_CHAR];
 
     // open file
     inFile.open(fileName);
@@ -74,18 +67,16 @@ void SongList::loadSongs(const char fileName[])
 
     // read first item
     inFile.get(title, MAX_CHAR, ';');
-    lenTitle[size] = strlen(title) + 1;
+
     // read info until end of file
     while (!inFile.eof())
     {
         inFile.get();  // discard ';'
         inFile.get(artist, MAX_CHAR, ';');
-	lenArtist[size] = strlen(artist) + 1;
         inFile.get();  // discard ';'
         inFile >> duration;
         inFile.get();  // discard ';'
         inFile.get(album, MAX_CHAR, '\n');
-	lenAlbum[size] = strlen(album) + 1;
         inFile.ignore(MAX_CHAR, '\n');     // discard new line
         // set info to thisSong obj
         aSong->setTitle(title);
@@ -95,25 +86,17 @@ void SongList::loadSongs(const char fileName[])
        
         // add thisSong to list
         addSongs(aSong);
-	size++;
+
+        // repeat
         inFile.get(title, MAX_CHAR, ';');
-	lenTitle[size] = strlen(title) + 1;
     }
-    // free memory
-    delete lenTitle[];
-    delete lenArtist[];
-    delete lenAlbum[];
-    delete title[];
-    delete artist[];
-    delete duration;
-    delete album[];
     // close inFile
     inFile.close();
 }
 
 /*
      function to save song list to file
-     recieves file name on call
+     receives file name on call
 */
 void SongList::saveSongs(const char fileName[]) const
 {
@@ -255,7 +238,7 @@ void SongList::printSongs() const
      function to search list of songs
      parameters
           const char name[] -> the search string provided by user
-		int searchby -> the type of search user wants (1 = artist, 2 = album)
+		int search by -> the type of search user wants (1 = artist, 2 = album)
 */
 void SongList::searchSongs(const char * name, int searchBy) const
 {

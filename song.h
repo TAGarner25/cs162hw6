@@ -5,7 +5,7 @@
 #ifndef SONG_H
 #define SONG_H
 
-#include "utils.h"	// gives extra functionality (like iostream)       
+#include "utils.h"	// gives extra functionality      
 
 /*
      TODO: check pointer declaration
@@ -16,18 +16,18 @@ class Song
 public:
     Song();   // constructor
     ~Song();  // destructor
-    Song(const Song& aSong); // copy constructor
+    Song(const Song& aSong); // ! deep copy constructor
 	// constructor with parameters 
-	Song(const char *title, const char *artist, float *duration, const char *album);	
+	Song(const char title[], const char artist[], float duration, const char album[]);	
 	// functions
-	void print(int index) const; // print song
+	void print() const; // ! print index in song list
 	void getSong();
 	 
 	// setters
-	void setTitle(const char * title);
-	void setArtist(const char * artist);
-	void setDuration(float * duration);
-	void setAlbum(const char * album);
+	void setTitle(const char &title);
+	void setArtist(const char  &artist);
+	void setDuration(float &duration);
+	void setAlbum(const char &album);
 
 	// getters
 	void getTitle(char * title) const;
@@ -36,12 +36,17 @@ public:
 	void getAlbum(char * album) const;
 
 private:
-	// declare pointers to be initialized upon creation
-	char	* title;
-	char	* artist;
-	float	* duration;
-	char	* album;
+	// declare pointers 
+	char * title;
+	char * artist;
+	float * duration;
+	char * album;
 
+// ! add operator declarations (operator overload)
+//	used to help 'streamline' the coding process. 
+friend:
+
+	// ? is this correct ?
 	void initSong(const char * title, const char * artist, float * duration, const char * album);
 };
 
