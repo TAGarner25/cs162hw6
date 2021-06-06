@@ -13,21 +13,22 @@
 */
 class Song
 {
+
 public:
-    Song();   // constructor
+    Song();   // default constructor
     ~Song();  // destructor
     Song(const Song& aSong); // ! deep copy constructor
 	// constructor with parameters 
-	Song(const char title[], const char artist[], float duration, const char album[]);	
+	Song(const char title[], const char artist[], float &duration, const char album[]);	
 	// functions
-	void print() const; // ! print index in song list
+	void print(int index) const; // ! print index in song list
 	void getSong();
 	 
 	// setters
-	void setTitle(const char &title);
-	void setArtist(const char  &artist);
-	void setDuration(float &duration);
-	void setAlbum(const char &album);
+	void setTitle(const char title[]);
+	void setArtist(const char  artist[]);
+	void setDuration(float duration);
+	void setAlbum(const char album[]);
 
 	// getters
 	void getTitle(char * title) const;
@@ -42,12 +43,14 @@ private:
 	float * duration;
 	char * album;
 
-// ! add operator declarations (operator overload)
-//	used to help 'streamline' the coding process. 
-friend:
-
 	// ? is this correct ?
 	void initSong(const char * title, const char * artist, float * duration, const char * album);
+
+// ! add operator declarations (operator overload)
+//	used to help 'streamline' the coding process. 
+
+// friend:
+
 };
 
 #endif
