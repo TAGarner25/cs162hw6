@@ -126,7 +126,7 @@ void Song::setAlbum(const char album[])
 void Song::getTitle(char * title) const
 {
     int len = strlen(this->title) + 1;
-    //title = new char[len];
+    title = new char[len];
     strcpy(title, this->title);
 }
 

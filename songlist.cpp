@@ -146,7 +146,7 @@ void SongList::saveSongs(const char fileName[]) const
 */
 bool SongList::addSongs(const Song& newSong)
 {     
-    bool found, title, artist;
+    bool found;
 	// ptrs will point to ptrs... need to use ** to access values
 	// int len = 0;
     // char * newTitle;
