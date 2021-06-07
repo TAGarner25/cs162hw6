@@ -19,7 +19,7 @@ public:
     ~Song();  // destructor
     Song(const Song& aSong); // ! deep copy constructor
 	// constructor with parameters 
-	Song(const char title[], const char artist[], float &duration, const char album[]);	
+	Song(const char title[], const char artist[], float duration, const char album[]);	
 	// functions
 	void print(int index) const; // ! print index in song list
 	void getSong();
@@ -40,11 +40,11 @@ private:
 	// declare pointers 
 	char * title;
 	char * artist;
-	float * duration;
+	float duration;
 	char * album;
 
 	// ? is this correct ?
-	void initSong(const char * title, const char * artist, float * duration, const char * album);
+	void initSong(const char title[], const char artist[], float duration, const char album[]);
 
 // ! add operator declarations (operator overload)
 //	used to help 'streamline' the coding process. 

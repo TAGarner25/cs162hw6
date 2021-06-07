@@ -47,9 +47,10 @@ SongList::~SongList()
 */
 void SongList::loadSongs(const char fileName[])
 {
-     ifstream inFile;         // ifstream operator
-
+    ifstream inFile;         // ifstream operator
+	Song aSong;
 	// temp values to read into pointers
+     // * get destroyed on function return
     char title[MAX_CHAR];
     char artist[MAX_CHAR];
     float duration;
@@ -71,9 +72,6 @@ void SongList::loadSongs(const char fileName[])
     // read info until end of file
     while (!inFile.eof())
     {
-		Song* aSong;
-	 	aSong = new Song;        // ptr to aSong
-
         inFile.get();  // discard ';'
         inFile.get(artist, MAX_CHAR, ';');
         inFile.get();  // discard ';'
@@ -82,16 +80,14 @@ void SongList::loadSongs(const char fileName[])
         inFile.get(album, MAX_CHAR, '\n');
         inFile.ignore(MAX_CHAR, '\n');     // discard new line
         // set info to thisSong obj
-        aSong->setTitle(title);
-        aSong->setArtist(artist);
-        aSong->setDuration(duration);
-        aSong->setAlbum(album);
+        aSong.setTitle(title);
+        aSong.setArtist(artist);
+        aSong.setDuration(duration);
+        aSong.setAlbum(album);
 
         // add newSong to songlist list
-		// TODO: fix this...
-			// ? do i really need two different pointers to accomplish?
-        addSongs(*aSong);
-		delete aSong; // ! do I need to delete this???
+		// ? do i really need two different pointers to accomplish?
+        addSongs(aSong);
         // repeat
         inFile.get(title, MAX_CHAR, ';');
     }
@@ -121,7 +117,7 @@ void SongList::saveSongs(const char fileName[]) const
 		exit(1);
     }
 
-    // loop through Song list and get info, then print to file
+    // loop through list, get info, then print to file
     for (auto idx = 0; idx < SIZE; idx++)
     {
         // get info for Song obj
@@ -151,22 +147,23 @@ void SongList::saveSongs(const char fileName[]) const
 bool SongList::addSongs(const Song& newSong)
 {     
     bool found, title, artist;
-    char newTitle[MAX_CHAR];
-    char newArtist[MAX_CHAR];
-    char existingTitle[MAX_CHAR];
-    char existingArtist[MAX_CHAR];
+	// ptrs will point to ptrs... need to use ** to access values
+	int len = 0;
+    char newTitle;
+    char * newArtist;
+    char * existingTitle;
+    char * existingArtist;
       
     // get newSong's information
-    newSong.getTitle(newTitle);
-    newSong.getArtist(newArtist);
+    newSong->getTitle(newTitle);
+    newSong->getArtist(newArtist);
     
-
     for (int idx = 0; idx < SIZE; idx++)
     {    
 		title = false;		// start @ false for each loop
 		artist = false;
 		// get existing information
-    	list[idx].getTitle(existingTitle);
+    	list[idx]->getTitle(existingTitle);
         list[idx].getArtist(existingArtist);
         // compare list title to newTitle
         if (strcmp(existingTitle, newTitle) == 0)

@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "c:\\Users\\Trevor Garner\\Documents\\Education\\PCC\\Spring21\\CS162\\clone_hw6",
+      "environment": [],
+      "program": "c:\\Users\\Trevor Garner\\Documents\\Education\\PCC\\Spring21\\CS162\\clone_hw6\\build\\Debug\\outDebug",
+      "internalConsoleOptions": "openOnSessionStart",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "externalConsole": true
+    }
+  ]
+}
