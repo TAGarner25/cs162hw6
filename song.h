@@ -13,7 +13,6 @@
 */
 class Song
 {
-
 public:
     Song();   // default constructor
     ~Song();  // destructor
@@ -36,20 +35,25 @@ public:
 	float getDuration() const;
 	void getAlbum(char * album) const;
 
+	// operator overload
+	bool operator==(const Song& rhs)
+	{
+		return (*this == rhs);
+	}
+
 private:
 	// declare pointers 
 	char * title;
 	char * artist;
-	float duration;
+	float * duration;
 	char * album;
 
 	// ? is this correct ?
-	void initSong(const char title[], const char artist[], float duration, const char album[]);
+	void initSong(const char * title, const char * artist, float duration, const char * album);
 
 // ! add operator declarations (operator overload)
 //	used to help 'streamline' the coding process. 
 
-// friend:
 
 };
 

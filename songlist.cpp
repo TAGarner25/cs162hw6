@@ -32,7 +32,7 @@ SongList::SongList(const Song& aSong)
 // destructor
 SongList::~SongList() 
 {
-     delete [] list;
+     delete list;
      list = nullptr;
 }
 
@@ -148,43 +148,51 @@ bool SongList::addSongs(const Song& newSong)
 {     
     bool found, title, artist;
 	// ptrs will point to ptrs... need to use ** to access values
-	int len = 0;
-    char newTitle;
-    char * newArtist;
-    char * existingTitle;
-    char * existingArtist;
+	// int len = 0;
+    // char * newTitle;
+    // char * newArtist;
+    // char * existingTitle;
+    // char * existingArtist;
       
     // get newSong's information
-    newSong->getTitle(newTitle);
-    newSong->getArtist(newArtist);
+    // newSong.getTitle(newTitle);
+    // newSong.getArtist(newArtist);
     
-    for (int idx = 0; idx < SIZE; idx++)
-    {    
-		title = false;		// start @ false for each loop
-		artist = false;
-		// get existing information
-    	list[idx]->getTitle(existingTitle);
-        list[idx].getArtist(existingArtist);
-        // compare list title to newTitle
-        if (strcmp(existingTitle, newTitle) == 0)
-        {
-    		title = true;
-        }
-        // compare this obj's artist to newArtist
-        if (strcmp(existingArtist, newArtist) == 0)
-        {
-        	artist = true;
-        }
-        // if both true, then song already exists in list
-        if ((title == true) && (artist == true))
-        {
-        	found = true;
-        }
-        else
-        {
-        	found = false;
-        }
-    }
+	for (int idx = 0; idx < SIZE; idx++)
+	{
+		if (list[idx] == newSong)
+		{
+			found = true;
+		}
+	}
+
+    // for (int idx = 0; idx < SIZE; idx++)
+    // {    
+	// 	title = false;		// start @ false for each loop
+	// 	artist = false;
+	// 	// get existing information
+    // 	list[idx].getTitle(existingTitle);
+    //     list[idx].getArtist(existingArtist);
+    //     // compare list title to newTitle
+    //     if (strcmp(existingTitle, newTitle) == 0)
+    //     {
+    // 		title = true;
+    //     }
+    //     // compare this obj's artist to newArtist
+    //     if (strcmp(existingArtist, newArtist) == 0)
+    //     {
+    //     	artist = true;
+    //     }
+    //     // if both true, then song already exists in list
+    //     if ((title == true) && (artist == true))
+    //     {
+    //     	found = true;
+    //     }
+    //     else
+    //     {
+    //     	found = false;
+    //     }
+    // }
      
     if (found == false) // if not already in list
     {
@@ -209,9 +217,9 @@ void SongList::removeSongs(int removeIdx)
     // loop through list and remove desired song
     for (int idx = removeIdx; idx < SIZE; idx++)
     {
-         list[idx] = list[idx + 1];     // delete song
+        list[idx] = list[idx + 1];     // delete song
     }
-    
+
     SIZE--;   // decrease size by 1
 
     // new code
@@ -219,7 +227,6 @@ void SongList::removeSongs(int removeIdx)
 	// will delete contents of dereferenced memory
     // pointer needs to be reassigned (use loop above)
     // new empty pointer needs to be set to nullptr
-    
 
 }
 
@@ -228,44 +235,44 @@ void SongList::removeSongs(int removeIdx)
 */
 void SongList::printSongs() const
 {
-     // loop through list and have obj print contents
-     for (auto idx = 0; idx < SIZE; idx++)
-     {
-          int pos = idx;			// song index
-          list[idx].print(pos);	// print song
-     }
+    // loop through list and have obj print contents
+    for (auto idx = 0; idx < SIZE; idx++)
+    {
+        int pos = idx;			// song index
+        list[idx].print(pos);	// print song
+    }
 }
 
 /*
-     function to search list of songs
-     parameters
-          const char name[] -> the search string provided by user
+    function to search list of songs
+    parameters
+        const char name[] -> the search string provided by user
 		int search by -> the type of search user wants (1 = artist, 2 = album)
 */
 void SongList::searchSongs(const char * name, int searchBy) const
 {
-     bool found = false;						// flag to determine if item was found
+    bool found = false;						// flag to determine if item was found
      
-     char listArtist[MAX_CHAR];                  	// search item from list
-     char listAlbum[MAX_CHAR];                   	// search item from list 
+    char listArtist[MAX_CHAR];                  	// search item from list
+    char listAlbum[MAX_CHAR];                   	// search item from list 
 
-     int index;							// used to print index position of song in list
+    int index;							// used to print index position of song in list
      
 
-     switch (searchBy)
-     {
-          case 1:   // artist
-			// loop through list and compare name to artist
-               for (int idx = 0; idx < SIZE; idx++)
-               {
-                    list[idx].getArtist(listArtist);
-                    index = idx;
+    switch (searchBy)
+    {
+        case 1:   // artist
+		// loop through list and compare name to artist
+            for (int idx = 0; idx < SIZE; idx++)
+            {
+                list[idx].getArtist(listArtist);
+                index = idx;
 
-                    if (strcmp(listArtist, name) == 0)     // compare list artist to search name
-                    {	// if are same print results
-                         found = true;
+                if (strcmp(listArtist, name) == 0)     // compare list artist to search name
+                {	// if are same print results
+                    found = true;
                          list[idx].print(index);
-                    }
+                }
 			}
                if (found == false) // if not found, display err msg
                {
@@ -281,8 +288,8 @@ void SongList::searchSongs(const char * name, int searchBy) const
                     index = idx;
                     if (strcmp(listAlbum, name) == 0)      // compare list album to search name
                     {	// if are the same, print results
-                         found = true;
-                         list[idx].print(index);
+                        found = true;
+                        list[idx].print(index);
                     }
 			}
                if (found == false) // if not found, display err msg

@@ -37,10 +37,7 @@ Song::Song()
 Song::Song(const Song& aSong)
 {
     // TODO: no need to declare new song obj here...
-    Song * newSong->title = new Song(aSong->title);
-    Song * newSong->artist = new Song(*aSong->artist);
-    Song newSong->duration = new Song(aSong->duration);
-    Song * newSong->album = new char(*aSong->album);
+    // do i need to copy the object?
 }
 
 /*
@@ -52,7 +49,7 @@ Song::Song(const Song& aSong)
 */
 Song::Song(const char title[], const char artist[], float duration, const char album[])
 {
-     initSong(title, artist, duration, album);
+    initSong(title, artist, duration, album);
 }
 /*
      deconstructor
@@ -77,13 +74,12 @@ void Song::initSong(const char * title, const char * artist, float duration, con
      
     this->title = new char[lenTtl];
     this->artist = new char[lenArt];
-    this->duration = new float;
+    this->duration = new float(duration);
     this->album = new char[lenAlb];
 
     // * OKAY * this is a deep copy.
     strcpy(this->title, title);        // title
     strcpy(this->artist, artist);      // artist
-    this->duration = duration;         // TODO: check this copy...
     strcpy(this->album, album);        // album
 }
 
@@ -112,8 +108,7 @@ void Song::setArtist(const char artist[])
 void Song::setDuration(float duration)
 {
      // deep copy parameter to this->instance of duration
-     this->duration = new float;
-     memcpy(this->duration, duration, sizeof(duration));
+     this->duration = new float(duration);
 }
 
 // album

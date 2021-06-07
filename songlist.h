@@ -36,6 +36,10 @@ public:
      void printSongs() const;
      void searchSongs(const char * name, int searchBy) const;  // TODO: need parameter still?
      
+     SongList operator=(const int& rhs)
+     {
+          return *this = rhs;
+     }
 };
 
 #endif
