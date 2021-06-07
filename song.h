@@ -1,11 +1,18 @@
 // Trevor Garner
-// CS 162 HW5
+// CS 162 HW6
 // class header: Song
 
 #ifndef SONG_H
 #define SONG_H
 
 #include "utils.h"	// gives extra functionality      
+
+// ! IMPORTANT:
+// * HIGHLIGHT:
+// ? QUESTION:
+// TODO:
+// wtf
+// normal
 
 /*
      TODO: check pointer declaration
@@ -30,7 +37,7 @@ public:
 	void setAlbum(const char album[]);
 
 	// getters
-	void getTitle(char * title) const;
+	char * getTitle() const;
 	void getArtist(char * artist) const;
 	float getDuration() const;
 	void getAlbum(char * album) const;
@@ -38,7 +45,14 @@ public:
 	// operator overload
 	bool operator==(const Song& rhs)
 	{
-		return (*this == rhs);
+		char ** rhstitle;
+		**rhstitle = *rhs.getTitle();
+		if(this->title == title)
+		{
+			return true;
+		}
+		else
+		{return false;}
 	}
 
 private:

@@ -1,9 +1,16 @@
 // Trevor Garner
-// CS 162 HW5
+// CS 162 HW6
 // Function definitions for SongList class
 
 #include "songlist.h"
 #include <fstream>
+
+// ! IMPORTANT:
+// * HIGHLIGHT:
+// ? QUESTION:
+// TODO:
+// wtf
+// normal
 
 /*
      TODO: update for using pointers
@@ -121,7 +128,7 @@ void SongList::saveSongs(const char fileName[]) const
     for (auto idx = 0; idx < SIZE; idx++)
     {
         // get info for Song obj
-		list[idx].getTitle(title);
+		list[idx].getTitle();
         list[idx].getArtist(artist);
         duration = list[idx].getDuration();
         list[idx].getAlbum(album);
@@ -165,34 +172,6 @@ bool SongList::addSongs(const Song& newSong)
 			found = true;
 		}
 	}
-
-    // for (int idx = 0; idx < SIZE; idx++)
-    // {    
-	// 	title = false;		// start @ false for each loop
-	// 	artist = false;
-	// 	// get existing information
-    // 	list[idx].getTitle(existingTitle);
-    //     list[idx].getArtist(existingArtist);
-    //     // compare list title to newTitle
-    //     if (strcmp(existingTitle, newTitle) == 0)
-    //     {
-    // 		title = true;
-    //     }
-    //     // compare this obj's artist to newArtist
-    //     if (strcmp(existingArtist, newArtist) == 0)
-    //     {
-    //     	artist = true;
-    //     }
-    //     // if both true, then song already exists in list
-    //     if ((title == true) && (artist == true))
-    //     {
-    //     	found = true;
-    //     }
-    //     else
-    //     {
-    //     	found = false;
-    //     }
-    // }
      
     if (found == false) // if not already in list
     {

@@ -123,11 +123,9 @@ void Song::setAlbum(const char album[])
 
 // title
 // * OKAY *
-void Song::getTitle(char * title) const
+char * Song::getTitle() const
 {
-    int len = strlen(this->title) + 1;
-    title = new char[len];
-    strcpy(title, this->title);
+    return this->title;
 }
 
 // artist
@@ -156,9 +154,9 @@ void Song::getAlbum(char album[]) const
      album = new char[len];
      strcpy(album, this->album);
 }
-
-/*****************    MEMBER FUNCTIONS    ******************************/
-
+/*
+! *****************    MEMBER FUNCTIONS    ******************************/
+*/
 /*
      function getSong
 */

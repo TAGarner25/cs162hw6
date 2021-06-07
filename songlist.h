@@ -7,6 +7,13 @@
 
 #include "song.h"	// contains class::Song properties
 
+// ! IMPORTANT:
+// * HIGHLIGHT:
+// ? QUESTION:
+// TODO:
+// wtf
+// normal
+
 /*
      TODO: update for dynamic memory
      TODO: default constructor initialized memory for Song* list
