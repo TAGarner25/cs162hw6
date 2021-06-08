@@ -5,11 +5,10 @@
 #include "songlist.h"
 #include <fstream>
 
-// ! IMPORTANT:
-// * HIGHLIGHT:
-// ? QUESTION:
-// TODO:
-// wtf
+// ! check on
+// * completed
+// ? not sure what to do...
+// TODO: items needing completion
 // normal
 
 /*
@@ -20,7 +19,7 @@
 
                /*   CONSTRUCTORS & DECONSTRUCTOR  */
 
-// default constructor
+// * default constructor
 SongList::SongList()
 {
     SIZE = 0;
@@ -28,13 +27,13 @@ SongList::SongList()
 
 }
 
-// TODO: needs to perform a *deep* copy of 'aSong' data to new Song object in list
+// ! copy constructor
 SongList::SongList(const Song& aSong)
 {
     // TODO: definition goes here
-
 }
-// destructor
+
+// * destructor
 SongList::~SongList() 
 {
      delete [] list;
@@ -91,9 +90,10 @@ void SongList::loadSongs(const char fileName[])
         aSong.setDuration(duration);
         aSong.setAlbum(album);
 
-        // add newSong to songlist list
+        // ! add newSong to songlist list
         addSongs(aSong);
-        // repeat
+        
+		// repeat
         inFile.get(title, MAX_CHAR, ';');
     }
     // close inFile
@@ -101,16 +101,16 @@ void SongList::loadSongs(const char fileName[])
 }
 
 /*
-     function to save song list to file
-     receives file name on call
+*    function to save song list to file
+*    receives file name on call
 */
 void SongList::saveSongs(const char fileName[]) const
 {
     ofstream outFile;
-    char title[MAX_CHAR];
-    char artist[MAX_CHAR];
+    char * title;
+    char * artist;
     float * duration;
-    char album[MAX_CHAR];
+    char * album;
 
     // open save file
     outFile.open(fileName);
@@ -123,29 +123,30 @@ void SongList::saveSongs(const char fileName[]) const
     }
 
     // loop through list, get info, then print to file
-    for (auto idx = 0; idx < SIZE; idx++)
+    for (int idx = 0; idx < SIZE; idx++)
     {
         // get info for Song obj
-		list[idx].getTitle(title);
-        list[idx].getDuration(duration);
-        list[idx].getArtist(artist);
-        list[idx].getAlbum(album);
+		title = list[idx].getTitle();
+        duration = list[idx].getDuration();
+        artist = list[idx].getArtist();
+        album = list[idx].getAlbum();
 
         
 
         // write to file
-        outFile   << title << ';'
-                  << artist << ';'
-                  << duration << ';'
-                  << album << endl;
+        outFile   << *title << ';'
+                  << *artist << ';'
+                  << *duration << ';'
+                  << *album << endl;
     }
  
      // close outfile
     outFile.close();
-}
+}   
 
-                    /*   USER INTERFACE FUNCTIONS */
-
+/*   
+! ******************   USER INTERFACE FUNCTIONS ******************************
+*/
 /*
      function to add song to song list
      parameters
@@ -156,26 +157,31 @@ bool SongList::addSongs(const Song& newSong)
     bool found;
 	// ptrs will point to ptrs... need to use ** to access values
 	// int len = 0;
-    char newTitle[MAX_CHAR];
-    char newArtist[MAX_CHAR];
-    char existingTitle[MAX_CHAR];
-    char existingArtist[MAX_CHAR];
+    char * newTitle;
+    char * newArtist;
+    char * existingTitle;
+    char * existingArtist;
       
     //get newSong's information
-    newSong.getTitle(newTitle);
-    newSong.getArtist(newArtist);
+    newTitle = newSong.getTitle();
+    newArtist = newSong.getArtist();
     
 	for (int idx = 0; idx < SIZE; idx++)
 	{  
-        list[idx].getTitle(existingTitle);
-        list[idx].getArtist(existingArtist);
+        existingTitle = list[idx].getTitle();
+        existingArtist = list[idx].getArtist();
 
-        if ((strcmp(existingTitle, newTitle) == 0) && (strcmp(existingArtist, newArtist) == 0))
+        // if ((strcmp(existingTitle, newTitle) == 0) && (strcmp(existingArtist, newArtist) == 0))
+		// {
+		// 	found = true;
+		// }
+
+		if ((existingTitle == newTitle) && (existingArtist == newArtist))
 		{
 			found = true;
 		}
 	}
-     
+
     if (found == false) // if not already in list
     {
     	list[SIZE] = newSong;    // add newSong to list
@@ -201,7 +207,10 @@ void SongList::removeSongs(int removeIdx)
     {
         list[idx] = list[idx + 1];     // delete song
     }
-
+	list[SIZE].setTitle(nullptr);
+	list[SIZE].setArtist(nullptr);
+	list[SIZE].setDuration(0);
+	list[SIZE].setAlbum(nullptr);
     SIZE--;   // decrease size by 1
 
     // new code
@@ -226,8 +235,6 @@ void SongList::printSongs() const
 }
 
 /*
-    wtf
-    TODO: FIX ME!
     function to search list of songs
     parameters
         const char name[] -> the search string provided by user
@@ -237,8 +244,8 @@ void SongList::searchSongs(const char name[], int searchBy) const
 {
     bool found = false;						// flag to determine if item was found
      
-    char listArtist[MAX_CHAR];                  	// search item from list
-    char listAlbum[MAX_CHAR];                   	// search item from list 
+    char * listArtist;                  	// search item from list
+    char * listAlbum;                   	// search item from list 
 
     int index;							// used to print index position of song in list
      
@@ -285,4 +292,63 @@ void SongList::searchSongs(const char name[], int searchBy) const
 				break;
                }
      }//end switch
+}
+
+/*
+!       ****************  OPERATOR OVERLOADS *********************
+*/
+
+// ! copy assignment
+SongList & SongList::operator = (const SongList & aSong) 
+{
+    if (*this != aSong)
+	{
+        		
+		//for (int idx = 0; idx < capacity; idx++) data[idx] = parm.data[idx];
+    }
+    return *this;
+}
+
+// ! reference subscript
+Song & SongList::operator [] (int index)
+{
+    return list[index];
+}
+
+// ! value subscript
+const Song & SongList::operator [] (int index) const
+{
+	return list[index];
+}
+
+// ! stream insertion
+std::ostream & SongList::operator << (std::ostream & output, const SongList & list)
+{
+
+}
+
+// ! stream extraction
+std::istream & SongList::operator >> (std::istream & input, SongList & list)
+{
+
+}
+
+// ? equal to 
+bool operator == (const SongList & left, const SongList & right)
+{
+	return; 
+}
+
+// ? less than
+bool operator < (const SongList & left, const SongList & right)
+{
+    if (left < right) 
+	 	return true;
+    if (left > right) 
+	 	return false;
+    for (int idx = 0; idx < SIZE; idx++)
+	{
+        if (left[idx] < right[idx]) return true;
+    }
+    return false;
 }

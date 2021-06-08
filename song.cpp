@@ -4,17 +4,16 @@
 
 #include "song.h"
 
-// ! IMPORTANT:
-// * HIGHLIGHT:
-// ? QUESTION:
-// TODO:
-// wtf
+// ! check on
+// * completed
+// ? not sure what to do...
+// TODO: items needing completion
 // normal
 
 
-// TODO: update constructors, and function definitions
+// TODO: stream operator definitions
 
-// default constructor
+//* default constructor
 Song::Song()
 {
 	// initialize default data members
@@ -24,13 +23,20 @@ Song::Song()
 	album = nullptr;
 }
 
-// constructor with pointers to all Song variables as parameters
-Song::Song(const char * title, const char * artist, float * duration, const char * album)
+//* constructor with pointers to all Song variables as parameters
+Song::Song(const char title[], const char artist[], float duration, const char album[])
 {
-	// allocate memory
+	// pass params to init function
+	init(title, artist, duration, album);
+}
+
+//* init function
+void Song::init(const char title[], const char artist[], float duration, const char album[])
+{
+	// allocate dynamic memory
 	this->title = new char[strlen(title) + 1];
 	this->artist = new char[strlen(artist) + 1];
-	this->duration = new float(*duration);   // allocated and initialized to value pointed to by duration
+	this->duration = new float(duration);   		// allocated and initialized to value
 	this->album = new char[strlen(album) + 1];
 
 	// copy params to allocated memory
@@ -39,8 +45,7 @@ Song::Song(const char * title, const char * artist, float * duration, const char
 	strcpy(this->album, album);        // album
 }
 
-// * BIG THREE
-// dtor
+//* dtor
 Song::~Song()
 {
 	delete [] this->title;
@@ -49,7 +54,7 @@ Song::~Song()
 	delete [] this->album;
 }
 
-// copy constructor
+//* copy constructor
 Song::Song(const Song& aSong)
 {
 	// allocate memory
@@ -61,11 +66,16 @@ Song::Song(const Song& aSong)
 	// copy 
 	strcpy(this->title, aSong.title);
 	strcpy(this->artist, aSong.artist);
-	aSong.getDuration(this->duration);
+	this->duration = aSong.duration;
 	strcpy(this->album, aSong.album);
 }
 
-// copy assignment
+/*
+						TODO: Update functions below...
+
+	! ********************** OPERATOR OVERLOADS *********************************
+*/
+//* copy assignment
 Song & Song::operator = (const Song & rhsSong) 
 {
 	// self assignment check
@@ -89,16 +99,53 @@ Song & Song::operator = (const Song & rhsSong)
 	// copy 
 	strcpy(this->title, rhsSong.title);
 	strcpy(this->artist, rhsSong.artist);
-	rhsSong.getDuration(this->duration);
+	this->duration = rhsSong.duration;
 	strcpy(this->album, rhsSong.album);
 
 	return *this;
 }
 
+// ? move assignment
+Song & Song::operator = (Song && aSong)
+{
+	if (this == &aSong)
+		return *this;
+
+	delete [] title;
+	delete [] artist;
+	delete duration;
+	delete [] album;
+
+	// ? how do i do the rest of this?
+}
+
+// *  reference subscript
+// int & Song::operator [] (std::size_t index)
+// {
+// 	return aSong[index];
+// } 
+// // value subscript
+// const int & Song::operator [] (std::size_t) const
+// {
+// 	// * DEFINITION GOES HERE
+// } 
+
+// ? stream insertion
+std::ostream & operator << (std::ostream &, const Song &)
+{
+	// ! DEFINITION GOES HERE
+}
+
+// ? stream extraction
+std::istream & operator >> (std::istream &, Song &)
+{
+	// ! DEFINITION GOES HERE
+}
+
 /*
 !   *****************     SETTERS & GETTERS     ****************************
 */
-// !   SET VARIABLES
+// *   SET VARIABLES
 
 // title
 void Song::setTitle(const char title[])
@@ -127,34 +174,30 @@ void Song::setAlbum(const char album[])
 	strcpy(this->album, album); // copy info to memory
 }
 
-// !  GET VARIABLES
+// *  GET VARIABLES
+// !  Can remove commented out code below, 
+// !  functions were declared inline.
 
-// title
-void Song::getTitle(char * title) const
-{
-	//title = new char[strlen(this->title) +1];
-	strcpy(title, this->title);
-}
-
-// artist
-void Song::getArtist(char * artist) const
-{
-	//artist = new char[strlen(this->artist) +1];
-	strcpy(artist, this->artist);
-}
-
-// duration
-void Song::getDuration(float * duration) const
-{
-	duration = this->duration;
-}
-
-// album
-void Song::getAlbum(char * album) const
-{
-	//album = new char[strlen(this->album) +1];
-	strcpy(album, this->album);
-}
+// // title
+// char * Song::getTitle() const
+// {
+// 	return title;
+// }
+// // artist
+// char * Song::getArtist() const
+// {
+// 	return artist;
+// }
+// // duration
+// float * Song::getDuration() const
+// {
+// 	return duration;
+// }
+// // album
+// char * Song::getAlbum() const
+// {
+// 	return album;
+// }
 
 /*
 ! *****************    MEMBER FUNCTIONS    ******************************
@@ -201,62 +244,42 @@ void Song::print(int index) const
 }
 
 /*
-						TODO: Update functions below...
-
-	! ********************** OPERATOR OVERLOADS *********************************
+*	******************** RELATIONAL OPERATORS *********************************
 */
 
-// Song & Song::operator = (Song &&)
-// {
+// equal to
+bool operator == (const Song & lhSong, const Song & rhSong)
+{
+	// returns true if song variables are the same for both objects
+	return (*lhSong.getTitle() == *rhSong.getTitle() &&
+			*lhSong.getArtist() == *rhSong.getArtist() &&
+			*lhSong.getDuration() == *rhSong.getDuration() &&
+			*lhSong.getAlbum() == *rhSong.getAlbum());
+}
 
-// } // move assignment
+// Less than
+bool operator < (const Song & lhSong, const Song & rhSong)
+{
+	bool address, title, artist, duration, album;
+	
+	if (&lhSong < &rhSong)	// compare addresses
+		address = true;
+	if (*lhSong.getTitle() < *rhSong.getTitle()) // compare dereferenced title val
+		title = true;
+	if (*lhSong.getArtist() < *rhSong.getArtist()) // compare dereferenced artist val
+		artist = true;
+	if (*lhSong.getDuration() < *rhSong.getDuration()) // compare dereferenced duration val
+		duration = true;
+	if (*lhSong.getAlbum() < *rhSong.getAlbum()) // compare dereferenced album val
+		album = true;
 
-// int & Song::operator [] (std::size_t)
-// {
-
-// } // reference subscript
-
-// const int & Song::operator [] (std::size_t) const
-// {
-
-// } // value subscript
-
-// std::ostream & operator << (std::ostream &, const Song &)
-// {
-
-// } // stream insertion
-
-// std::istream & operator >> (std::istream &, Song &)
-// {
-
-// } // stream extraction
-
-// bool operator == (const Song &, const Song &)
-// {
-
-// } // equal to
-
-// bool operator != (const Song &, const Song &)
-// {
-
-// }	// not equal to
-
-// bool operator <  (const Song &, const Song &)
-// {
-
-// }  // Less than
-
-// bool operator <= (const Song &, const Song &)
-// {
-
-// }  // Less than or equal
-
-// bool operator >= (const Song &, const Song &)
-// {
-
-// }  // Greater than or equal
-
-// bool operator >  (const Song &, const Song &)
-// {
-
-// }  // Greater than
+	// if lhSong address is less than rhSong address (address == true)
+	// OR
+	// lhSong (title, artist, duration, and album) are less then rhSong (==true)
+	// then : return true, 
+	// otherwise : return false
+	if ((address == true) || (title && artist && duration && album))
+		return true;
+	else
+		return false;
+}  
