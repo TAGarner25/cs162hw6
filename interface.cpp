@@ -17,7 +17,7 @@ void start()  // start prog
      SongList library;
      int action;     
 
-     // step 1: load songs
+     // * step 1: load songs
      library.loadSongs(fileName);     
      // step 2: display menu -> choose what to do -> execute decision -> repeat until quit
      menu();
@@ -30,7 +30,7 @@ void start()  // start prog
           action = readAction();
      }
      
-     // step 4: on quit save songs and quit program
+     // * step 4: on quit save songs and quit program
      library.saveSongs(fileName);
 
      cout << "Goodbye." << endl;
@@ -78,10 +78,10 @@ void execute(int action, SongList& library)    // execute user choice
  
      switch (cmd)
      {
-          case 1:   // view song list
+          case 1:   // * view song list
                library.printSongs();
                break;
-          case 2:   // add song to list
+          case 2:   // * add song to list
                char addAgain;
                addToList(library);
                addAgain = repeatAction();
@@ -91,7 +91,7 @@ void execute(int action, SongList& library)    // execute user choice
                     addAgain = repeatAction();
                }
                break;
-          case 3:   // remove song from list
+          case 3:   // * remove song from list
                char removeAgain;
                removeFromList(library);
                removeAgain = repeatAction();
@@ -101,7 +101,7 @@ void execute(int action, SongList& library)    // execute user choice
                     removeAgain = repeatAction();
                }
                break;
-          case 4:   // search the song list for an artist or album
+          case 4:   // * search the song list for an artist or album
                char searchAgain;
                searchList(library);
                searchAgain = repeatAction();
@@ -146,12 +146,11 @@ char repeatAction()
 */
 void addToList(SongList& library)		// get a new song from user and add to song list
 {
-     Song * newSong;
-     newSong = new Song;
+     Song newSong;
 
-     newSong->getSong(); // read new song from user
+     newSong.getSong(); // read new song from user
 
-     if (library.addSongs(*newSong) == true)  // compare new song to existing songs
+     if (library.addSongs(newSong) == true)  // compare new song to existing songs
      {    // if true then song added successfully
           cout << "Song added successfully." << endl;
      }

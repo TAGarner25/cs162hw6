@@ -11,209 +11,177 @@
 // wtf
 // normal
 
+
+// TODO: update constructors, and function definitions
+
 // default constructor
 Song::Song()
 {
-    // initialize default data members
-    // TODO: dont need to declare new & set = to nullptr...
-    //! can do either or, but since not using variable immediately, best to just set = to nullptr
-    int size = 1;
-    title = new char[size];
-    artist = new char[size];
-    duration = new float;
-    album = new char[size];
-    title = nullptr;
-    artist = nullptr;
-    duration = nullptr;
-    album = nullptr;
+	// initialize default data members
+	title = nullptr;
+	artist = nullptr;
+	duration = nullptr;
+	album = nullptr;
 }
 
-/*   
-    ! DEEP COPY
-	! Not sure this is needed...
-    deep copy with Song object as parameter
-    constuctor with parameter
-*/
-Song::Song(const Song& aSong)
+// constructor with pointers to all Song variables as parameters
+Song::Song(const char * title, const char * artist, float * duration, const char * album)
 {
-    // TODO: no need to declare new song obj here...
-    // do i need to copy the object?
+	// allocate memory
+	this->title = new char[strlen(title) + 1];
+	this->artist = new char[strlen(artist) + 1];
+	this->duration = new float(*duration);   // allocated and initialized to value pointed to by duration
+	this->album = new char[strlen(album) + 1];
+
+	// copy params to allocated memory
+	strcpy(this->title, title);        // title
+	strcpy(this->artist, artist);      // artist
+	strcpy(this->album, album);        // album
 }
 
-/*
-     default constructor
-     deep copy by using 'init' function
-*/
-/*
-     * OKAY *
-*/
-Song::Song(const char title[], const char artist[], float duration, const char album[])
-{
-    initSong(title, artist, duration, album);
-}
-/*
-     deconstructor
-     * OKAY *
-*/
+// * BIG THREE
+// dtor
 Song::~Song()
 {
+	delete [] this->title;
+	delete [] this->artist;
+	delete this->duration;
+	delete [] this->album;
+}
+
+// copy constructor
+Song::Song(const Song& aSong)
+{
+	// allocate memory
+	this->title = new char[strlen(aSong.title) + 1];
+	this->artist = new char[strlen(aSong.artist) + 1];
+	this->duration = new float;
+	this->album = new char[strlen(aSong.album) + 1];
+
+	// copy 
+	strcpy(this->title, aSong.title);
+	strcpy(this->artist, aSong.artist);
+	aSong.getDuration(this->duration);
+	strcpy(this->album, aSong.album);
+}
+
+// copy assignment
+Song & Song::operator = (const Song & rhsSong) 
+{
+	// self assignment check
+	if (this == &rhsSong)
+	{
+		return * this;
+	}
+
+	// check ptrs
 	delete [] title;
 	delete [] artist;
 	delete duration;
 	delete [] album;
+
+	// memory allocation
+	this->title = new char[strlen(rhsSong.title) + 1];
+	this->artist = new char[strlen(rhsSong.artist) + 1];
+	this->duration = new float;
+	this->album = new char[strlen(rhsSong.album) + 1];
+
+	// copy 
+	strcpy(this->title, rhsSong.title);
+	strcpy(this->artist, rhsSong.artist);
+	rhsSong.getDuration(this->duration);
+	strcpy(this->album, rhsSong.album);
+
+	return *this;
 }
 
 /*
-  * OKAY *
+!   *****************     SETTERS & GETTERS     ****************************
 */
-void Song::initSong(const char * title, const char * artist, float duration, const char * album) 
-{
-    int lenTtl = strlen(title) + 1;
-    int lenArt = strlen(artist) + 1;
-    int lenAlb = strlen(album) + 1;
-     
-    this->title = new char[lenTtl];
-    this->artist = new char[lenArt];
-    this->duration = new float(duration);
-    this->album = new char[lenAlb];
+// !   SET VARIABLES
 
-    // * OKAY * this is a deep copy.
-    strcpy(this->title, title);        // title
-    strcpy(this->artist, artist);      // artist
-    strcpy(this->album, album);        // album
-}
-
-/******************     SETTERS & GETTERS     *****************************/
-                    /*   SET VARIABLES  */
 // title
-// * OKAY *
 void Song::setTitle(const char title[])
 {
-    int len = strlen(title) + 1;
-    this->title = new char[len];
-    strcpy(this->title, title);
+	this->title = new char[strlen(title) + 1];	// allocate memory
+	strcpy(this->title, title); // copy info to memory
 }
 
 // artist
-// * OKAY *
 void Song::setArtist(const char artist[])
 {
-    int len = strlen(artist) + 1;
-    this->artist = new char[len];
-    strcpy(this->artist, artist);
+	this->artist = new char[strlen(artist) + 1]; // allocate memory
+	strcpy(this->artist, artist); // copy info to memory
 }
 
 // duration
-// * OKAY *
 void Song::setDuration(float duration)
 {
-     // deep copy parameter to this->instance of duration
-     this->duration = new float(duration);
+	 this->duration = new float(duration); // allocated and initialized to value pointed to by duration
 }
 
 // album
-// * OKAY *
 void Song::setAlbum(const char album[])
 {
-    int len = strlen(album) + 1;
-    this->album = new char[len];
-    strcpy(this->album, album);
+	this->album = new char[strlen(album) + 1]; // allocate memory
+	strcpy(this->album, album); // copy info to memory
 }
-                    /*   GET VARIABLES  */
+
+// !  GET VARIABLES
 
 // title
-// * OKAY *
-char * Song::getTitle() const
+void Song::getTitle(char * title) const
 {
-    return this->title;
+	//title = new char[strlen(this->title) +1];
+	strcpy(title, this->title);
 }
 
 // artist
-// * OKAY *
-void Song::getArtist(char artist[]) const
+void Song::getArtist(char * artist) const
 {
-    int len = strlen(this->artist) + 1;
-    artist = new char[len];
-    strcpy(artist, this->artist);
+	//artist = new char[strlen(this->artist) +1];
+	strcpy(artist, this->artist);
 }
 
 // duration
-// * OKAY *
-float Song::getDuration() const
+void Song::getDuration(float * duration) const
 {
-     float * temp;
-     temp = this->duration;
-     return *temp;
+	duration = this->duration;
 }
 
 // album
-// * OKAY *
-void Song::getAlbum(char album[]) const
+void Song::getAlbum(char * album) const
 {
-     int len = strlen(this->album) + 1;
-     album = new char[len];
-     strcpy(album, this->album);
+	//album = new char[strlen(this->album) +1];
+	strcpy(album, this->album);
 }
+
 /*
-! *****************    MEMBER FUNCTIONS    ******************************/
+! *****************    MEMBER FUNCTIONS    ******************************
 */
+
 /*
-     function getSong
+	 function to get new Song from user
 */
 void Song::getSong()
 {
-     char ttl[MAX_CHAR];
-	 char art[MAX_CHAR];
-	 char alb[MAX_CHAR];
-     float dur;
+	char ttl[MAX_CHAR];
+	char art[MAX_CHAR];
+	char alb[MAX_CHAR];
+	float dur;
 
-     cout << "Please enter song title: ";
-     getString(ttl, MAX_CHAR);  // read to temp str
-     
-    //  int len = strlen(tempStr) + 1; // get str len
-    //  title = new char[len];  // declare pointer to title
-     
-     setTitle(ttl);  // copy value to ptr
-     
-    //  len = 0; // reset values to 0 for reuse
-    //  for (int c : tempStr)
-    //  {
-    //       tempStr[c] = 0;
-    //  } 
-
-     cout << "Please enter song artist: ";
-     getString(art, MAX_CHAR);
-     
-    //  len = strlen(tempStr) + 1; // get str len
-    //  artist = new char[len];  // declare pointer to title
-     
-     setArtist(art);  // copy value to ptr
-     
-    //  len = 0;  // reset values to 0 for reuse
-    //  for (int c : tempStr)
-    //  {
-    //       tempStr[c] = 0;
-    //  }
-
-     cout << "Please enter song duration: ";
-    //  duration = new float;
-     cin >> dur;
-    setDuration(dur);
-     
-     cout << "Please enter song album: ";
-     getString(alb, MAX_CHAR);
-     
-    //  len = strlen(tempStr) + 1; // get str len
-    //  album = new char[len];  // declare pointer to title
-     
-    setAlbum(alb);  // copy value to ptr
-     
-    //  len = 0; // reset values to 0 for reuse
-    //  for (int c : tempStr).3
-    //  {
-    //       tempStr[c] = 0;
-    //  }
-     
+	cout << "Please enter song title: ";
+	getString(ttl, MAX_CHAR);  // read to temp str
+	setTitle(ttl);  // copy value to ptr
+	cout << "Please enter song artist: ";
+	getString(art, MAX_CHAR);
+	setArtist(art);  // copy value to ptr
+	cout << "Please enter song duration: ";
+	cin >> dur;
+	setDuration(dur);   // copy val to ptr
+	cout << "Please enter song album: ";
+	getString(alb, MAX_CHAR);
+	setAlbum(alb);  // copy value to ptr
 }
 
 
@@ -222,13 +190,73 @@ void Song::getSong()
 //   int index: used to print index position of song in list
 void Song::print(int index) const
 {
-     cout << setprecision(4);
-     cout << "Index:     " << index << endl;      // idx of Song list[]
-     cout << "Title:     " << *title << endl;      // this-> title
-     cout << "Artist:    " << *artist << endl;     // this-> artist
-     cout << "Duration:  " << *duration << endl;   // this-> duration
-     cout << "Album:     " << *album << endl;      // this-> album
-     cout << "--------------------------------------------"
-          << endl;
+	cout << setprecision(4);
+	cout << "Index:     " << index << endl;      // idx of Song list[]
+	cout << "Title:     " << title << endl;      // this-> title
+	cout << "Artist:    " << artist << endl;     // this-> artist
+	cout << "Duration:  " << duration << endl;   // this-> duration
+	cout << "Album:     " << album << endl;      // this-> album
+	cout << "--------------------------------------------" << endl;
 	cout << endl;
 }
+
+/*
+						TODO: Update functions below...
+
+	! ********************** OPERATOR OVERLOADS *********************************
+*/
+
+// Song & Song::operator = (Song &&)
+// {
+
+// } // move assignment
+
+// int & Song::operator [] (std::size_t)
+// {
+
+// } // reference subscript
+
+// const int & Song::operator [] (std::size_t) const
+// {
+
+// } // value subscript
+
+// std::ostream & operator << (std::ostream &, const Song &)
+// {
+
+// } // stream insertion
+
+// std::istream & operator >> (std::istream &, Song &)
+// {
+
+// } // stream extraction
+
+// bool operator == (const Song &, const Song &)
+// {
+
+// } // equal to
+
+// bool operator != (const Song &, const Song &)
+// {
+
+// }	// not equal to
+
+// bool operator <  (const Song &, const Song &)
+// {
+
+// }  // Less than
+
+// bool operator <= (const Song &, const Song &)
+// {
+
+// }  // Less than or equal
+
+// bool operator >= (const Song &, const Song &)
+// {
+
+// }  // Greater than or equal
+
+// bool operator >  (const Song &, const Song &)
+// {
+
+// }  // Greater than

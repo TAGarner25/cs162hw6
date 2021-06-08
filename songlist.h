@@ -21,16 +21,13 @@
 class SongList
 {
 private:
-
-	int SIZE = 0;
-     Song* list;    // ptr to song obj
-
+     Song * list;    // ptr to song obj
+     int SIZE;
 public:
-
      // constructor & deconstructor
      SongList();		    // default constructor
      // ? Do i need this copy?
-     SongList(const Song& aSong); // TODO: make a deep copy constructor
+     SongList(const Song& aSong); 
      ~SongList();		    // destructor
 
      // program functions
@@ -39,14 +36,11 @@ public:
 
      // interface functions
      bool addSongs(const Song& newSong);
-     void removeSongs(int removeIdx);        // TODO: do I need parameter still?
+     void removeSongs(int removeIdx);       
      void printSongs() const;
-     void searchSongs(const char * name, int searchBy) const;  // TODO: need parameter still?
+     void searchSongs(const char name[], int searchBy) const;  
      
-     SongList operator=(const int& rhs)
-     {
-          return *this = rhs;
-     }
+     
 };
 
 #endif

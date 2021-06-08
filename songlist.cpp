@@ -23,11 +23,9 @@
 // default constructor
 SongList::SongList()
 {
-     SIZE++;
-     list = new Song[SIZE];	// declare pointer array to list
-     // declare number of songs
-     // default is 0 if no songs in list
-     list = nullptr;
+    SIZE = 0;
+    list = nullptr;	// declare pointer array to list
+
 }
 
 // TODO: needs to perform a *deep* copy of 'aSong' data to new Song object in list
@@ -39,7 +37,7 @@ SongList::SongList(const Song& aSong)
 // destructor
 SongList::~SongList() 
 {
-     delete list;
+     delete [] list;
      list = nullptr;
 }
 
@@ -56,8 +54,8 @@ void SongList::loadSongs(const char fileName[])
 {
     ifstream inFile;         // ifstream operator
 	Song aSong;
-	// temp values to read into pointers
-     // * get destroyed on function return
+	
+    // temp values to read into pointers
     char title[MAX_CHAR];
     char artist[MAX_CHAR];
     float duration;
@@ -87,13 +85,13 @@ void SongList::loadSongs(const char fileName[])
         inFile.get(album, MAX_CHAR, '\n');
         inFile.ignore(MAX_CHAR, '\n');     // discard new line
         // set info to thisSong obj
+        
         aSong.setTitle(title);
         aSong.setArtist(artist);
         aSong.setDuration(duration);
         aSong.setAlbum(album);
 
         // add newSong to songlist list
-		// ? do i really need two different pointers to accomplish?
         addSongs(aSong);
         // repeat
         inFile.get(title, MAX_CHAR, ';');
@@ -111,7 +109,7 @@ void SongList::saveSongs(const char fileName[]) const
     ofstream outFile;
     char title[MAX_CHAR];
     char artist[MAX_CHAR];
-    float duration;
+    float * duration;
     char album[MAX_CHAR];
 
     // open save file
@@ -128,11 +126,13 @@ void SongList::saveSongs(const char fileName[]) const
     for (auto idx = 0; idx < SIZE; idx++)
     {
         // get info for Song obj
-		list[idx].getTitle();
+		list[idx].getTitle(title);
+        list[idx].getDuration(duration);
         list[idx].getArtist(artist);
-        duration = list[idx].getDuration();
         list[idx].getAlbum(album);
+
         
+
         // write to file
         outFile   << title << ';'
                   << artist << ';'
@@ -156,18 +156,21 @@ bool SongList::addSongs(const Song& newSong)
     bool found;
 	// ptrs will point to ptrs... need to use ** to access values
 	// int len = 0;
-    // char * newTitle;
-    // char * newArtist;
-    // char * existingTitle;
-    // char * existingArtist;
+    char newTitle[MAX_CHAR];
+    char newArtist[MAX_CHAR];
+    char existingTitle[MAX_CHAR];
+    char existingArtist[MAX_CHAR];
       
-    // get newSong's information
-    // newSong.getTitle(newTitle);
-    // newSong.getArtist(newArtist);
+    //get newSong's information
+    newSong.getTitle(newTitle);
+    newSong.getArtist(newArtist);
     
 	for (int idx = 0; idx < SIZE; idx++)
-	{
-		if (list[idx] == newSong)
+	{  
+        list[idx].getTitle(existingTitle);
+        list[idx].getArtist(existingArtist);
+
+        if ((strcmp(existingTitle, newTitle) == 0) && (strcmp(existingArtist, newArtist) == 0))
 		{
 			found = true;
 		}
@@ -223,12 +226,14 @@ void SongList::printSongs() const
 }
 
 /*
+    wtf
+    TODO: FIX ME!
     function to search list of songs
     parameters
         const char name[] -> the search string provided by user
 		int search by -> the type of search user wants (1 = artist, 2 = album)
 */
-void SongList::searchSongs(const char * name, int searchBy) const
+void SongList::searchSongs(const char name[], int searchBy) const
 {
     bool found = false;						// flag to determine if item was found
      
@@ -244,7 +249,8 @@ void SongList::searchSongs(const char * name, int searchBy) const
 		// loop through list and compare name to artist
             for (int idx = 0; idx < SIZE; idx++)
             {
-                list[idx].getArtist(listArtist);
+
+                //strcpy(listArtist, artist);
                 index = idx;
 
                 if (strcmp(listArtist, name) == 0)     // compare list artist to search name
@@ -263,7 +269,8 @@ void SongList::searchSongs(const char * name, int searchBy) const
 			// loop through list and compare name to album
                for (int idx = 0; idx < SIZE; idx++)
                {
-                    list[idx].getAlbum(listAlbum);
+
+                    //strcpy(listAlbum, album);
                     index = idx;
                     if (strcmp(listAlbum, name) == 0)      // compare list album to search name
                     {	// if are the same, print results
