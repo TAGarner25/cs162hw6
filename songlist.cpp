@@ -22,15 +22,14 @@
 // * default constructor
 SongList::SongList()
 {
-    SIZE = 0;
+    length = -1;
     list = nullptr;	// declare pointer array to list
-
 }
 
-// ! copy constructor
+// copy constructor
 SongList::SongList(const Song& aSong)
 {
-    // TODO: definition goes here
+
 }
 
 // * destructor
@@ -40,9 +39,8 @@ SongList::~SongList()
      list = nullptr;
 }
 
-/******************          FUNCTIONS          ******************************/
-
-                    /*   PROGRAM FUNCTIONS   */
+/******************          FUNCTIONS          ******************************
+ ******************    PROGRAM FUNCTIONS        ******************************/
 
 /*
      function to load song collection from file
@@ -148,9 +146,10 @@ void SongList::saveSongs(const char fileName[]) const
 ! ******************   USER INTERFACE FUNCTIONS ******************************
 */
 /*
-     function to add song to song list
-     parameters
-          Song newSong -> the newSong object the user has provided
+    ? how to "grow" list array ?
+    function to add song to song list
+    parameters
+        Song newSong -> the newSong object the user has provided
 */
 bool SongList::addSongs(const Song& newSong)
 {     
@@ -171,12 +170,7 @@ bool SongList::addSongs(const Song& newSong)
         existingTitle = list[idx].getTitle();
         existingArtist = list[idx].getArtist();
 
-        // if ((strcmp(existingTitle, newTitle) == 0) && (strcmp(existingArtist, newArtist) == 0))
-		// {
-		// 	found = true;
-		// }
-
-		if ((existingTitle == newTitle) && (existingArtist == newArtist))
+       	if ((*existingTitle == *newTitle) && (*existingArtist == *newArtist))
 		{
 			found = true;
 		}
@@ -195,9 +189,10 @@ bool SongList::addSongs(const Song& newSong)
 }         
 
 /*
-     function to remove song
-     parameter
-          index position of song to remove (provided by user)
+    ? how to remove item from list array ?
+    function to remove song
+    parameter
+        index position of song to remove (provided by user)
 */
 void SongList::removeSongs(int removeIdx)
 {
@@ -222,7 +217,7 @@ void SongList::removeSongs(int removeIdx)
 }
 
 /*
-     function to print all songs in list
+    ! function to print all songs in list
 */
 void SongList::printSongs() const
 {
@@ -298,38 +293,49 @@ void SongList::searchSongs(const char name[], int searchBy) const
 !       ****************  OPERATOR OVERLOADS *********************
 */
 
-// ! copy assignment
-SongList & SongList::operator = (const SongList & aSong) 
-{
-    if (*this != aSong)
-	{
-        		
-		//for (int idx = 0; idx < capacity; idx++) data[idx] = parm.data[idx];
-    }
-    return *this;
-}
+// copy assignment
+// use: 
+// SongList & SongList::operator = (const SongList & newList) 
+// {
+//     // self check
+// 	if (this == &newList)
+// 	{
+//     	return *this;
+// 	}
+// 	// get size
+// 	size_t size = ((sizeof list) / (sizeof list[0])) + 1;
+// 	// ptr check
+// 	delete [] list;
+// 	// copy list to new list
+// 	this->list = new Song[size];
+// }
 
 // ! reference subscript
-Song & SongList::operator [] (int index)
+int & SongList::operator [] (size_t index)
 {
-    return list[index];
+    return &list[index];
 }
 
 // ! value subscript
-const Song & SongList::operator [] (int index) const
+const int & SongList::operator [] (int index) const
 {
-	return list[index];
+	return (*list)[index];
 }
 
 // ! stream insertion
-std::ostream & SongList::operator << (std::ostream & output, const SongList & list)
+std::ostream & SongList::operator << (ostream & out, const SongList & list)
 {
-
+    
 }
 
 // ! stream extraction
-std::istream & SongList::operator >> (std::istream & input, SongList & list)
+std::istream & SongList::operator >> (istream & in, SongList & list)
 {
+    char userStr[MAX_CHAR];
+    float userFlt;
+    in >> userStr;
+    in >> userFlt;
+
 
 }
 

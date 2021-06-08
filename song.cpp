@@ -54,20 +54,17 @@ Song::~Song()
 	delete [] this->album;
 }
 
-//* copy constructor
+//* copy constructor - relies on copy assignment
 Song::Song(const Song& aSong)
 {
 	// allocate memory
-	this->title = new char[strlen(aSong.title) + 1];
-	this->artist = new char[strlen(aSong.artist) + 1];
-	this->duration = new float;
-	this->album = new char[strlen(aSong.album) + 1];
+	this->title = nullptr;
+	this->artist = nullptr;
+	this->duration = nullptr;
+	this->album = nullptr;
 
 	// copy 
-	strcpy(this->title, aSong.title);
-	strcpy(this->artist, aSong.artist);
-	this->duration = aSong.duration;
-	strcpy(this->album, aSong.album);
+	*this = aSong;
 }
 
 /*
@@ -76,10 +73,10 @@ Song::Song(const Song& aSong)
 	! ********************** OPERATOR OVERLOADS *********************************
 */
 //* copy assignment
-Song & Song::operator = (const Song & rhsSong) 
+Song & Song::operator = (const Song & aSong) 
 {
 	// self assignment check
-	if (this == &rhsSong)
+	if (this == &aSong)
 	{
 		return * this;
 	}
@@ -91,33 +88,22 @@ Song & Song::operator = (const Song & rhsSong)
 	delete [] album;
 
 	// memory allocation
-	this->title = new char[strlen(rhsSong.title) + 1];
-	this->artist = new char[strlen(rhsSong.artist) + 1];
+	this->title = new char[strlen(aSong.title) + 1];
+	this->artist = new char[strlen(aSong.artist) + 1];
 	this->duration = new float;
-	this->album = new char[strlen(rhsSong.album) + 1];
+	this->album = new char[strlen(aSong.album) + 1];
 
 	// copy 
-	strcpy(this->title, rhsSong.title);
-	strcpy(this->artist, rhsSong.artist);
-	this->duration = rhsSong.duration;
-	strcpy(this->album, rhsSong.album);
+	strcpy(this->title, aSong.title);
+	strcpy(this->artist, aSong.artist);
+	this->duration = aSong.duration;
+	strcpy(this->album, aSong.album);
 
 	return *this;
 }
 
-// ? move assignment
-Song & Song::operator = (Song && aSong)
-{
-	if (this == &aSong)
-		return *this;
-
-	delete [] title;
-	delete [] artist;
-	delete duration;
-	delete [] album;
-
-	// ? how do i do the rest of this?
-}
+// move assignment
+// Song & Song::operator = (Song && aSong){}
 
 // *  reference subscript
 // int & Song::operator [] (std::size_t index)
@@ -175,8 +161,8 @@ void Song::setAlbum(const char album[])
 }
 
 // *  GET VARIABLES
-// !  Can remove commented out code below, 
-// !  functions were declared inline.
+// Can remove commented out code below, 
+// functions were declared inline.
 
 // // title
 // char * Song::getTitle() const
@@ -235,10 +221,10 @@ void Song::print(int index) const
 {
 	cout << setprecision(4);
 	cout << "Index:     " << index << endl;      // idx of Song list[]
-	cout << "Title:     " << title << endl;      // this-> title
-	cout << "Artist:    " << artist << endl;     // this-> artist
-	cout << "Duration:  " << duration << endl;   // this-> duration
-	cout << "Album:     " << album << endl;      // this-> album
+	cout << "Title:     " << *title << endl;      // this-> title
+	cout << "Artist:    " << *artist << endl;     // this-> artist
+	cout << "Duration:  " << *duration << endl;   // this-> duration
+	cout << "Album:     " << *album << endl;      // this-> album
 	cout << "--------------------------------------------" << endl;
 	cout << endl;
 }
@@ -258,28 +244,26 @@ bool operator == (const Song & lhSong, const Song & rhSong)
 }
 
 // Less than
-bool operator < (const Song & lhSong, const Song & rhSong)
-{
-	bool address, title, artist, duration, album;
-	
-	if (&lhSong < &rhSong)	// compare addresses
-		address = true;
-	if (*lhSong.getTitle() < *rhSong.getTitle()) // compare dereferenced title val
-		title = true;
-	if (*lhSong.getArtist() < *rhSong.getArtist()) // compare dereferenced artist val
-		artist = true;
-	if (*lhSong.getDuration() < *rhSong.getDuration()) // compare dereferenced duration val
-		duration = true;
-	if (*lhSong.getAlbum() < *rhSong.getAlbum()) // compare dereferenced album val
-		album = true;
-
-	// if lhSong address is less than rhSong address (address == true)
-	// OR
-	// lhSong (title, artist, duration, and album) are less then rhSong (==true)
-	// then : return true, 
-	// otherwise : return false
-	if ((address == true) || (title && artist && duration && album))
-		return true;
-	else
-		return false;
-}  
+// bool operator < (const Song & lhSong, const Song & rhSong)
+// {
+// 	bool address, title, artist, duration, album;
+// 	if (&lhSong < &rhSong)	// compare addresses
+// 		address = true;
+// 	if (*lhSong.getTitle() < *rhSong.getTitle()) // compare dereferenced title val
+// 		title = true;
+// 	if (*lhSong.getArtist() < *rhSong.getArtist()) // compare dereferenced artist val
+// 		artist = true;
+// 	if (*lhSong.getDuration() < *rhSong.getDuration()) // compare dereferenced duration val
+// 		duration = true;
+// 	if (*lhSong.getAlbum() < *rhSong.getAlbum()) // compare dereferenced album val
+// 		album = true;
+// 	// if lhSong address is less than rhSong address (address == true)
+// 	// OR
+// 	// lhSong (title, artist, duration, and album) are less then rhSong (==true)
+// 	// then : return true, 
+// 	// otherwise : return false
+// 	if ((address == true) || (title && artist && duration && album))
+// 		return true;
+// 	else
+// 		return false;
+// }  

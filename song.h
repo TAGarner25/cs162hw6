@@ -19,21 +19,20 @@
 class Song
 {
 public:
-    //* ctors & dtor
+    // ctors & dtor
 	Song();   															// default constructor
 	Song(const char title[], const char artist[], float duration, const char album[]);
 	Song(const Song& copySong);  										// copy constructor
+	Song(Song &&);														// move ctor
 	~Song();  															// destructor
 	
-	//* assignments
+	// assignments
 	Song & operator = (const Song & copySong);							// copy assignment
 	Song & operator = (Song &&); 										// move assignment
 	
-	// * subscript - not needed
-	// int & operator [] (std::size_t); 									// reference subscript
-	// const int & operator [] (std::size_t) const; 						// value subscript
-	
-	// ! stream operators
+	// stream operators
+	//Song & operator << (const Song &);
+	//Song & operator >> (Song &);
 	friend std::ostream & operator << (std::ostream & output, const Song & aSong) 	// ? stream insertion
 	{
 		output << "Title: " << aSong.title << "Artist: " <<  aSong.artist << "Duration: " << *aSong.duration 
@@ -46,17 +45,17 @@ public:
 		return input;
 	}
 
-	//* functions
+	// functions
 	void print(int index) const; 										// * print index in song list
 	void getSong();
 	 
-	//* mutators
+	// mutators
 	void setTitle(const char * title);	
 	void setArtist(const char * artist);
 	void setDuration(float duration);
 	void setAlbum(const char * album);
 
-	// * accessors;
+	// accessors;
 	char * getTitle() const {return title;}
 	char * getArtist() const {return artist;}
 	float * getDuration() const {return duration;}
@@ -64,18 +63,19 @@ public:
 
 private:
 	
-	//* declare pointers 
+	// declare pointers 
 	char * title = nullptr;
 	char * artist = nullptr;
 	float * duration = nullptr;
 	char * album = nullptr;
-
-	//* init funct
+	Song * next = nullptr; 		// ptr to self
+	
+	// init funct
 	void init(const char title[], const char artist[], float duration, const char album[]);
 
 };
 
-//* Relational operators
+// Relational operators
 // source: textbook
 bool operator == (const Song &, const Song &);	// equal to
 bool operator <  (const Song &, const Song &);  // Less than
