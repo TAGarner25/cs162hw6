@@ -39,7 +39,6 @@ public:
 	friend ostream & operator << (ostream &, const SongList &);   // stream insertion
 	friend istream & operator >> (istream &, SongList &);         // stream extraction
 
-     
     /*
 		Operations
 			load list

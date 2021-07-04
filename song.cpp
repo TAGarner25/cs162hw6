@@ -163,23 +163,22 @@ void Song::setAlbum(const char album[])
 // *  GET VARIABLES
 // Can remove commented out code below, 
 // functions were declared inline.
-
-// // title
+// title
 // char * Song::getTitle() const
 // {
 // 	return title;
 // }
-// // artist
+// artist
 // char * Song::getArtist() const
 // {
 // 	return artist;
 // }
-// // duration
+// duration
 // float * Song::getDuration() const
 // {
 // 	return duration;
 // }
-// // album
+// album
 // char * Song::getAlbum() const
 // {
 // 	return album;
